@@ -85,8 +85,6 @@ echo " Descarga y compilacion de u-boot "
 sleep 1
 echo " Descargando u-boot denx "
 sleep 1
-git clone http://git.denx.de/u-boot.git
-
 cd /mnt/ramdisk/sunxi/u-boot
 wget ftp://ftp.denx.de/pub/u-boot/u-boot-2017.11.tar.bz2 
 wget ftp://ftp.denx.de/pub/u-boot/u-boot-2018.03.tar.bz2 
