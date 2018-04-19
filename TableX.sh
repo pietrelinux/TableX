@@ -16,7 +16,7 @@ mkdir	/mnt/ramdisk
 mount -t tmpfs none /mnt/ramdisk -o size=3000M 
 mkdir /home/sunxi/
 mkdir /home/sunxi/tools
-sudo mkdir /home/sunxi/u-boot
+mkdir /home/sunxi/u-boot
 mkdir /mnt/ramdisk/sunxi
 mkdir /mnt/ramdisk/sunxi/u-boot
 mkdir /mnt/ramdisk/sunxi/kernel/
@@ -38,8 +38,8 @@ sleep 1
 cd /home/sunxi/tools
 git clone https://github.com/linux-sunxi/sunxi-tools
 cd sunxi-tools
-sudo make -j$(nproc)
-sudo make -j$(nproc) install
+make -j$(nproc)
+make -j$(nproc) install
 
 echo " Instalación completada"
 sleep 1
@@ -68,15 +68,15 @@ echo " Descargando y descomprimiento Kernel mainline"
 sleep 1
 wget -P /mnt/ramdisk/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.16.1.tar.xz
 cd /mnt/ramdisk/sunxi/kernel/mainline/
-sudo tar -Jxf /mnt/ramdisk/sunxi/kernel/mainline/linux-4.16.1.tar.xz
+tar -Jxf /mnt/ramdisk/sunxi/kernel/mainline/linux-4.16.1.tar.xz
 cp /mnt/ramdisk/sunxi/TableX_defconfig /mnt/ramdisk/sunxi/kernel/mainline/linux-4.16.1/arch/arm/configs
 cd /mnt/ramdisk/sunxi/kernel/mainline/linux-4.16.1
-sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf TableX_defconfig
+make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf TableX_defconfig
 # sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
-sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs 
-sudo ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=output make modules modules_install
-sudo cp arch/arm/boot/zImage  /TableX/boot
-sudo cp arch/arm/boot/dts/sun8i-a33-q8-tablet.dtb /TableX/boot/
+make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs 
+ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=output make modules modules_install
+cp arch/arm/boot/zImage  /TableX/boot
+cp arch/arm/boot/dts/sun8i-a33-q8-tablet.dtb /TableX/boot/
 cd ..
 clear
 echo " Kernel compilado "
