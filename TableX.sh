@@ -1,4 +1,3 @@
-
 #!/bin/sh
 clear
 echo " Bienvenid@s al script de creacion"
