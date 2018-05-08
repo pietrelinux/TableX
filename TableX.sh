@@ -21,10 +21,13 @@ mkdir /mnt/ramdisk/sunxi
 mkdir /mnt/ramdisk/sunxi/u-boot
 mkdir /mnt/ramdisk/sunxi/kernel/
 mkdir /mnt/ramdisk/sunxi/kernel/mainline
+mkdir /mnt/ramdisk/sunxi/kernel/sunxi
 mkdir /mnt/ramdisk/sunxi/kernel/zImage
 mkdir /mnt/ramdisk/sunxi/Imagen
 mkdir /home/sunxi/kernel/
+mkdir /home/sunxi/kernel/modules
 mkdir /home/sunxi/kernel/mainline
+mkdir /home/sunxi/kernel/sunxi
 echo " Directorios creados "
 cp TableX_defconfig /mnt/ramdisk/sunxi/
 sleep 1
@@ -45,12 +48,12 @@ sleep 1
 #git clone https://github.com/linux-sunxi/linux-sunxi.git
 echo "Preparando Imagen Gnu/Linux"
 sleep 1
-dd if=/dev/zero of=/mnt/ramdisk/sunxi/Imagen/bionic.img bs=1 count=0 seek=2700M
-mkfs.ext4 -b 4096 -F /mnt/ramdisk/sunxi/Imagen/bionic.img
-chmod 777 /mnt/ramdisk/sunxi/Imagen/bionic.img
+dd if=/dev/zero of=/mnt/ramdisk/sunxi/Imagen/trusty.img bs=1 count=0 seek=2700M
+mkfs.ext4 -b 4096 -F /mnt/ramdisk/sunxi/Imagen/trusty.img
+chmod 777 /mnt/ramdisk/sunxi/Imagen/trusty.img
 mkdir /TableX
-mount -o loop /mnt/ramdisk/sunxi/Imagen/bionic.img /TableX
-debootstrap --arch=armhf --foreign bionic /TableX
+mount -o loop /mnt/ramdisk/sunxi/Imagen/trusty.img /TableX
+debootstrap --arch=armhf --foreign trusty /TableX
 echo " Añadiendo script de inicio "
 > /mnt/ramdisk/sunxi/boot.cmd
 cat <<+ >> /mnt/ramdisk/sunxi/boot.cmd
@@ -66,7 +69,7 @@ sleep 1
 wget -P /mnt/ramdisk/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.16.7.tar.xz
 cd /mnt/ramdisk/sunxi/kernel/mainline/
 tar -Jxf /mnt/ramdisk/sunxi/kernel/mainline/linux-4.16.7.tar.xz
-cp /mnt/ramdisk/sunxi/TableX_defconfig /mnt/ramdisk/sunxi/kernel/mainline/linux-4.16.3/arch/arm/configs/
+cp /mnt/ramdisk/sunxi/TableX_defconfig /mnt/ramdisk/sunxi/kernel/mainline/linux-4.16.7/arch/arm/configs/
 cd /mnt/ramdisk/sunxi/kernel/mainline/linux-4.16.7
 make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf TableX_defconfig
 # sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
@@ -146,10 +149,10 @@ echo " Configurando debootstrap segunda fase"
 sleep 3
 /debootstrap/debootstrap --second-stage
 export LANG=C
-echo "deb http://ports.ubuntu.com/ bionic main restricted universe multiverse" > /etc/apt/sources.list
-echo "deb http://ports.ubuntu.com/ bionic-security main restricted universe multiverse" >> /etc/apt/sources.list
-echo "deb http://ports.ubuntu.com/ bionic-updates main restricted universe multiverse" >> /etc/apt/sources.list
-echo "deb http://ports.ubuntu.com/ bionic-backports main restricted universe multiverse" >> /etc/apt/sources.list
+echo "deb http://ports.ubuntu.com/ trusty main restricted universe multiverse" > /etc/apt/sources.list
+echo "deb http://ports.ubuntu.com/ trusty-security main restricted universe multiverse" >> /etc/apt/sources.list
+echo "deb http://ports.ubuntu.com/ trusty-updates main restricted universe multiverse" >> /etc/apt/sources.list
+echo "deb http://ports.ubuntu.com/ trusty-backports main restricted universe multiverse" >> /etc/apt/sources.list
 echo "nameserver 8.8.8.8" > /etc/resolv.conf
 echo "Europe/Berlin" > /etc/timezone
 echo "TableX" >> /etc/hostname
@@ -177,10 +180,9 @@ export LC_ALL="es_ES.UTF-8"
 update-locale LC_ALL=es_ES.UTF-8 LANG=es_ES.UTF-8 LC_MESSAGES=POSIX
 dpkg-reconfigure locales
 dpkg-reconfigure -f noninteractive tzdata
-
-sudo apt-get install ubuntu-desktop wireless-tools iw -y
-adduser bionic
-addgroup bionic sudo
+sudo apt-get install lubuntu-desktop wireless-tools iw -y
+adduser trusty
+addgroup trusty sudo
 exit
 +
 chmod +x  /mnt/ramdisk/sunxi/config.sh
@@ -191,6 +193,6 @@ sudo mount -o bind /dev /TableX/dev && sudo mount -o bind /dev/pts /TableX/dev/p
 
 chroot /TableX /usr/bin/qemu-arm-static /bin/sh -i ./home/config.sh && exit 
 sudo umount /TableX/{sys,proc,dev/pts,dev}
-sudo cp /mnt/ramdisk/sunxi/Imagen/bionic.img /home/sunxi/bionic.img 
 umount /TableX
+sudo cp /mnt/ramdisk/sunxi/Imagen/trusty.img /home/sunxi/trusty.img 
 exit
