@@ -66,11 +66,11 @@ mkimage -C none -A arm -T script -d /mnt/ramdisk/sunxi/boot.cmd /mnt/ramdisk/sun
 cp /mnt/ramdisk/sunxi/boot.scr /TableX/boot
 echo " Descargando y descomprimiento Kernel mainline" 
 sleep 1
-wget -P /mnt/ramdisk/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.16.7.tar.xz
+wget -P /mnt/ramdisk/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.16.11.tar.xz
 cd /mnt/ramdisk/sunxi/kernel/mainline/
-tar -Jxf /mnt/ramdisk/sunxi/kernel/mainline/linux-4.16.7.tar.xz
-cp /mnt/ramdisk/sunxi/TableX_defconfig /mnt/ramdisk/sunxi/kernel/mainline/linux-4.16.7/arch/arm/configs/
-cd /mnt/ramdisk/sunxi/kernel/mainline/linux-4.16.7
+tar -Jxf /mnt/ramdisk/sunxi/kernel/mainline/linux-4.16.11.tar.xz
+cp /mnt/ramdisk/sunxi/TableX_defconfig /mnt/ramdisk/sunxi/kernel/mainline/linux-4.16.11/arch/arm/configs/
+cd /mnt/ramdisk/sunxi/kernel/mainline/linux-4.16.11
 make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf TableX_defconfig
 # sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
 make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs 
