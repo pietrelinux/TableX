@@ -12,8 +12,6 @@ echo " Instalación de dependencias completado "
 sleep 1
 echo " Creando directorios y disco RAM "
 sleep 1
-mkdir	/mnt/ramdisk
-mount -t tmpfs none /mnt/ramdisk -o size=3000M 
 mkdir /home/sunxi/
 mkdir /home/sunxi/tools
 mkdir /home/sunxi/u-boot
@@ -66,11 +64,11 @@ mkimage -C none -A arm -T script -d /mnt/ramdisk/sunxi/boot.cmd /mnt/ramdisk/sun
 cp /mnt/ramdisk/sunxi/boot.scr /TableX/boot
 echo " Descargando y descomprimiento Kernel mainline" 
 sleep 1
-wget -P /mnt/ramdisk/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.16.11.tar.xz
+wget -P /mnt/ramdisk/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.17.tar.xz
 cd /mnt/ramdisk/sunxi/kernel/mainline/
-tar -Jxf /mnt/ramdisk/sunxi/kernel/mainline/linux-4.16.11.tar.xz
-cp /mnt/ramdisk/sunxi/TableX_defconfig /mnt/ramdisk/sunxi/kernel/mainline/linux-4.16.11/arch/arm/configs/
-cd /mnt/ramdisk/sunxi/kernel/mainline/linux-4.16.11
+tar -Jxf /mnt/ramdisk/sunxi/kernel/mainline/linux-4.17.tar.xz
+cp /mnt/ramdisk/sunxi/TableX_defconfig /mnt/ramdisk/sunxi/kernel/mainline/linux-4.17/arch/arm/configs/
+cd /mnt/ramdisk/sunxi/kernel/mainline/linux-4.17
 make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf TableX_defconfig
 # sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
 make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs 
