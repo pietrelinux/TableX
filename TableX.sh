@@ -13,21 +13,15 @@ sleep 1
 echo " Creando directorios y disco RAM "
 sleep 1
 mkdir /home/sunxi/
+mkdir /home/sunxi/Imagen
 mkdir /home/sunxi/tools
 mkdir /home/sunxi/u-boot
-mkdir /mnt/ramdisk/sunxi
-mkdir /mnt/ramdisk/sunxi/u-boot
-mkdir /mnt/ramdisk/sunxi/kernel/
-mkdir /mnt/ramdisk/sunxi/kernel/mainline
-mkdir /mnt/ramdisk/sunxi/kernel/sunxi
-mkdir /mnt/ramdisk/sunxi/kernel/zImage
-mkdir /mnt/ramdisk/sunxi/Imagen
 mkdir /home/sunxi/kernel/
 mkdir /home/sunxi/kernel/modules
 mkdir /home/sunxi/kernel/mainline
 mkdir /home/sunxi/kernel/sunxi
 echo " Directorios creados "
-cp TableX_defconfig /mnt/ramdisk/sunxi/
+cp TableX_defconfig /home/sunxi
 sleep 1
 echo " OK "
 sleep 1
@@ -46,29 +40,29 @@ sleep 1
 #git clone https://github.com/linux-sunxi/linux-sunxi.git
 echo "Preparando Imagen Gnu/Linux"
 sleep 1
-dd if=/dev/zero of=/mnt/ramdisk/sunxi/Imagen/trusty.img bs=1 count=0 seek=2700M
-mkfs.ext4 -b 4096 -F /mnt/ramdisk/sunxi/Imagen/trusty.img
-chmod 777 /mnt/ramdisk/sunxi/Imagen/trusty.img
+dd if=/dev/zero of=/home/sunxi/Imagen/xenial.img bs=1 count=0 seek=2700M
+mkfs.ext4 -b 4096 -F /home/sunxi/Imagen/xenial.img
+chmod 777 /home/sunxi/Imagen/xenial.img
 mkdir /TableX
-mount -o loop /mnt/ramdisk/sunxi/Imagen/trusty.img /TableX
-debootstrap --arch=armhf --foreign trusty /TableX
+mount -o loop /home/sunxi/Imagen/xenial.img /TableX
+debootstrap --arch=armhf --foreign xenial /TableX
 echo " Añadiendo script de inicio "
-> /mnt/ramdisk/sunxi/boot.cmd
-cat <<+ >> /mnt/ramdisk/sunxi/boot.cmd
+> /home/sunxi/boot.cmd
+cat <<+ >> /home/sunxi/boot.cmd
 setenv bootargs console=ttyS0,115200 root=/dev/mmcblk0p1 rootwait panic=10
 load mmc 0:1 0x43000000 sun8i-a33-q8-tablet.dtb || load mmc 0:1 0x43000000 boot/sun8i-a33-q8-tablet.dtb
 load mmc 0:1 0x42000000 zImage || load mmc 0:1 0x42000000 boot/zImage
 bootz 0x42000000 - 0x43000000
 +
-mkimage -C none -A arm -T script -d /mnt/ramdisk/sunxi/boot.cmd /mnt/ramdisk/sunxi/boot.scr
-cp /mnt/ramdisk/sunxi/boot.scr /TableX/boot
+mkimage -C none -A arm -T script -d /home/sunxi/boot.cmd /home/sunxi/boot.scr
+cp /home/sunxi/boot.scr /TableX/boot
 echo " Descargando y descomprimiento Kernel mainline" 
 sleep 1
-wget -P /mnt/ramdisk/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.17.tar.xz
-cd /mnt/ramdisk/sunxi/kernel/mainline/
-tar -Jxf /mnt/ramdisk/sunxi/kernel/mainline/linux-4.17.tar.xz
-cp /mnt/ramdisk/sunxi/TableX_defconfig /mnt/ramdisk/sunxi/kernel/mainline/linux-4.17/arch/arm/configs/
-cd /mnt/ramdisk/sunxi/kernel/mainline/linux-4.17
+wget -P /home/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.17.tar.xz
+cd /home/sunxi/kernel/mainline/
+tar -Jxf /home/sunxi/sunxi/kernel/mainline/linux-4.17.tar.xz
+cp /home/sunxi/TableX_defconfig /home/sunxi/kernel/mainline/linux-4.17/arch/arm/configs/
+cd /home/sunxi/kernel/mainline/linux-4.17
 make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf TableX_defconfig
 # sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
 make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs 
@@ -83,7 +77,7 @@ echo " Descarga y compilacion de u-boot "
 sleep 1
 echo " Descargando u-boot denx "
 sleep 1
-cd /mnt/ramdisk/sunxi/u-boot
+cd/home/sunxi/u-boot
 wget ftp://ftp.denx.de/pub/u-boot/u-boot-2017.11.tar.bz2 
 wget ftp://ftp.denx.de/pub/u-boot/u-boot-2018.03.tar.bz2 
 cp u-boot-2018.03.tar.bz2 /home/sunxi/u-boot
@@ -140,17 +134,17 @@ sleep 1
 cp /usr/bin/qemu-arm-static /TableX/usr/bin
 cp /etc/resolv.conf /TableX/etc
 
-> /mnt/ramdisk/sunxi/config.sh
-cat <<+ >> /mnt/ramdisk/sunxi/config.sh
+> /home/sunxi/config.sh
+cat <<+ >> /home/sunxi/config.sh
 #!/bin/sh
 echo " Configurando debootstrap segunda fase"
 sleep 3
 /debootstrap/debootstrap --second-stage
 export LANG=C
-echo "deb http://ports.ubuntu.com/ trusty main restricted universe multiverse" > /etc/apt/sources.list
-echo "deb http://ports.ubuntu.com/ trusty-security main restricted universe multiverse" >> /etc/apt/sources.list
-echo "deb http://ports.ubuntu.com/ trusty-updates main restricted universe multiverse" >> /etc/apt/sources.list
-echo "deb http://ports.ubuntu.com/ trusty-backports main restricted universe multiverse" >> /etc/apt/sources.list
+echo "deb http://ports.ubuntu.com/ xenial main restricted universe multiverse" > /etc/apt/sources.list
+echo "deb http://ports.ubuntu.com/ xenial-security main restricted universe multiverse" >> /etc/apt/sources.list
+echo "deb http://ports.ubuntu.com/ xenial-updates main restricted universe multiverse" >> /etc/apt/sources.list
+echo "deb http://ports.ubuntu.com/ xenial-backports main restricted universe multiverse" >> /etc/apt/sources.list
 echo "nameserver 8.8.8.8" > /etc/resolv.conf
 echo "Europe/Berlin" > /etc/timezone
 echo "TableX" >> /etc/hostname
@@ -179,12 +173,12 @@ update-locale LC_ALL=es_ES.UTF-8 LANG=es_ES.UTF-8 LC_MESSAGES=POSIX
 dpkg-reconfigure locales
 dpkg-reconfigure -f noninteractive tzdata
 sudo apt-get install lubuntu-desktop wireless-tools iw -y
-adduser trusty
-addgroup trusty sudo
+adduser xenial
+addgroup xenial sudo
 exit
 +
-chmod +x  /mnt/ramdisk/sunxi/config.sh
-sudo cp  /mnt/ramdisk/sunxi/config.sh /TableX/home
+chmod +x  /home/sunxi/config.sh
+sudo cp  /home/sunxi/config.sh /TableX/home
 echo "Montando directorios"
 sleep 1
 sudo mount -o bind /dev /TableX/dev && sudo mount -o bind /dev/pts /TableX/dev/pts && sudo mount -t sysfs /sys /TableX/sys && sudo mount -t proc /proc /TableX/proc
@@ -192,5 +186,5 @@ sudo mount -o bind /dev /TableX/dev && sudo mount -o bind /dev/pts /TableX/dev/p
 chroot /TableX /usr/bin/qemu-arm-static /bin/sh -i ./home/config.sh && exit 
 sudo umount /TableX/{sys,proc,dev/pts,dev}
 umount /TableX
-sudo cp /mnt/ramdisk/sunxi/Imagen/trusty.img /home/sunxi/trusty.img 
 exit
+
