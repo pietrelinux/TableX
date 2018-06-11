@@ -8,7 +8,6 @@ echo " Instalando dependencias"
 sleep 1
 apt-get update
 apt-get install -y flex bison gcc-arm-linux-gnueabihf wget bc tree git debootstrap qemu-user-static build-essential libssl-dev libusb-1.0-0-dev bin86 libqt4-dev libncurses5 libncurses5-dev qt4-dev-tools u-boot-tools device-tree-compiler swig libpython-dev libqt4-dev libusb-dev zlib1g-dev pkg-config libgtk2.0-dev libglib2.0-dev libglade2-dev
-clear
 echo " Instalación de dependencias completado "
 sleep 1
 echo " Creando directorios y disco RAM "
@@ -20,7 +19,8 @@ mkdir /home/sunxi/u-boot
 mkdir /home/sunxi/kernel/
 mkdir /home/sunxi/kernel/modules
 mkdir /home/sunxi/kernel/mainline
-mkdir /home/sunxi/kernel/sunxi
+mkdir /home/sunxi/kernel/zimage
+clear
 echo " Directorios creados "
 cp TableX_defconfig /home/sunxi
 sleep 1
@@ -57,18 +57,22 @@ bootz 0x42000000 - 0x43000000
 +
 mkimage -C none -A arm -T script -d /home/sunxi/boot.cmd /home/sunxi/boot.scr
 cp /home/sunxi/boot.scr /TableX/boot
+cp /home/sunxi/boot.scr /TableX/boot
+
 echo " Descargando y descomprimiento Kernel mainline" 
 sleep 1
 wget -P /home/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.17.tar.xz
 cd /home/sunxi/kernel/mainline/
-tar -Jxf /home/sunxi/sunxi/kernel/mainline/linux-4.17.tar.xz
+tar -Jxf /home/sunxi/kernel/mainline/linux-4.17.tar.xz
 cp /home/sunxi/TableX_defconfig /home/sunxi/kernel/mainline/linux-4.17/arch/arm/configs/
 cd /home/sunxi/kernel/mainline/linux-4.17
 make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf TableX_defconfig
 # sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
 make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs 
 ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=/TableX make modules modules_install
-cp arch/arm/boot/zImage  /TableX/boot
+cp -R lib /home/sunxi/kernel/modules
+cp arch/arm/boot/dts/zImage /TableX/boot/
+cp arch/arm/boot/zImage  /home/sunxi/kernel/zimage
 cp arch/arm/boot/dts/sun8i-a33-q8-tablet.dtb /TableX/boot/
 cd ..
 clear
@@ -83,6 +87,7 @@ wget ftp://ftp.denx.de/pub/u-boot/u-boot-2017.11.tar.bz2
 wget ftp://ftp.denx.de/pub/u-boot/u-boot-2018.03.tar.bz2 
 cp u-boot-2018.03.tar.bz2 /home/sunxi/u-boot
 tar -xjvf u-boot-2018.03.tar.bz2
+clear
 echo " Descarga y descompresión de u-boot finalizada "
 sleep 1
 echo " Cuando aparezca el menu "
@@ -90,6 +95,7 @@ sleep 1
 echo " no tiene que configurar nada "
 sleep 1
 echo "para continuar, seleccione Menu ----> File ----> Quit"
+sleep 1
 cd u-boot-2018.03
 echo "      Menu de compilación del u-boot"
 echo " Elija una opción para compilación del u-boot según su modelo de tablet"
@@ -176,6 +182,7 @@ dpkg-reconfigure -f noninteractive tzdata
 sudo apt-get install lubuntu-desktop wireless-tools iw -y
 adduser xenial
 addgroup xenial sudo
+rm /home/config.sh
 exit
 +
 chmod +x  /home/sunxi/config.sh
@@ -188,4 +195,3 @@ chroot /TableX /usr/bin/qemu-arm-static /bin/sh -i ./home/config.sh && exit
 sudo umount /TableX/{sys,proc,dev/pts,dev}
 umount /TableX
 exit
-
