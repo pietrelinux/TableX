@@ -201,7 +201,6 @@ cat <<+ >> /etc/udev/rules.d/50-mali.rules
 KERNEL=="mali", MODE="0660", GROUP="video"
 KERNEL=="ump", MODE="0660", GROUP="video"
 +
-rm /home/config.sh
 exit
 +
 chmod +x  /home/sunxi/config.sh
@@ -209,8 +208,8 @@ sudo cp  /home/sunxi/config.sh /TableX/home
 echo "Montando directorios"
 sleep 1
 sudo mount -o bind /dev /TableX/dev && sudo mount -o bind /dev/pts /TableX/dev/pts && sudo mount -t sysfs /sys /TableX/sys && sudo mount -t proc /proc /TableX/proc
-
 chroot /TableX /usr/bin/qemu-arm-static /bin/sh -i ./home/config.sh && exit 
+rm /home/config.sh
 sudo umount /TableX/{sys,proc,dev/pts,dev}
 umount /TableX
 exit
