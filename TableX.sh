@@ -59,6 +59,18 @@ mkimage -C none -A arm -T script -d /home/sunxi/boot.cmd /home/sunxi/boot.scr
 cp /home/sunxi/boot.scr /TableX/boot
 cp /home/sunxi/boot.scr /TableX/boot
 
+echo " Configurando modulos "
+> /Tablex/etc/rc.local
+cat  <<+ >> /Tablex/etc/rc.local
+#!/bin/sh -e
+mali
+ump
+exit 0
++
+
+clear
+echo " Completado"
+sleep 1
 echo " Descargando y descomprimiento Kernel mainline" 
 sleep 1
 wget -P /home/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.17.tar.xz
@@ -66,6 +78,7 @@ cd /home/sunxi/kernel/mainline/
 tar -Jxf /home/sunxi/kernel/mainline/linux-4.17.tar.xz
 cp /home/sunxi/TableX_defconfig /home/sunxi/kernel/mainline/linux-4.17/arch/arm/configs/
 cd /home/sunxi/kernel/mainline/linux-4.17
+echo " Compilando "
 make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf TableX_defconfig
 # sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
 make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs 
@@ -134,6 +147,7 @@ esac
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- gconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
 sudo cp u-boot-sunxi-with-spl.bin /TableX/boot
+clear
 echo "Compilación de u-boot terminada"
 sleep 1
 echo "Iniciando proceso deboostrap"
@@ -182,6 +196,11 @@ dpkg-reconfigure -f noninteractive tzdata
 sudo apt-get install lubuntu-desktop wireless-tools iw -y
 adduser xenial
 addgroup xenial sudo
+> /etc/udev/rules.d/50-mali.rules
+cat <<+ >> /etc/udev/rules.d/50-mali.rules
+KERNEL=="mali", MODE="0660", GROUP="video"
+KERNEL=="ump", MODE="0660", GROUP="video"
++
 rm /home/config.sh
 exit
 +
