@@ -7,7 +7,7 @@ sleep 1
 echo " Instalando dependencias"
 sleep 1
 apt-get update
-apt-get install -y flex bison gcc-arm-linux-gnueabihf wget bc tree git debootstrap qemu-user-static build-essential libssl-dev libusb-1.0-0-dev bin86 libqt4-dev libncurses5 libncurses5-dev qt4-dev-tools u-boot-tools device-tree-compiler swig libpython-dev libqt4-dev libusb-dev zlib1g-dev pkg-config libgtk2.0-dev libglib2.0-dev libglade2-dev
+apt-get install -y flex bison gcc-arm-linux-gnueabihf wget bc tree git debootstrap install qemu-system-common build-essential libssl-dev libusb-1.0-0-dev bin86 libqt4-dev libncurses5 libncurses5-dev qt4-dev-tools u-boot-tools device-tree-compiler swig libpython-dev libqt4-dev libusb-dev zlib1g-dev pkg-config libgtk2.0-dev libglib2.0-dev libglade2-dev
 echo " Instalación de dependencias completado "
 sleep 1
 echo " Creando directorios y disco RAM "
