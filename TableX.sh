@@ -41,7 +41,7 @@ sleep 1
 #git clone https://github.com/linux-sunxi/linux-sunxi.git
 echo "Preparando Imagen Gnu/Linux"
 sleep 1
-dd if=/dev/zero of=/home/sunxi/Imagen/xenial.img bs=1 count=0 seek=2700M
+dd if=/dev/zero of=/home/sunxi/Imagen/xenial.img bs=1 count=0 seek=3200M
 mkfs.ext4 -b 4096 -F /home/sunxi/Imagen/xenial.img
 chmod 777 /home/sunxi/Imagen/xenial.img
 mkdir /TableX
@@ -57,25 +57,16 @@ bootz 0x42000000 - 0x43000000
 +
 mkimage -C none -A arm -T script -d /home/sunxi/boot.cmd /home/sunxi/boot.scr
 cp /home/sunxi/boot.scr /TableX/boot
-cp /home/sunxi/boot.scr /TableX/boot
-
-echo " Configurando modulos "
-> /Tablex/etc/rc.local
-cat  <<+ >> /Tablex/etc/rc.local
-#!/bin/sh -e
-mali
-ump
-exit 0
-+
+cp /home/sunxi/boot.cmd /TableX/boot
 
 clear
 echo " Completado"
 sleep 1
 echo " Descargando y descomprimiento Kernel mainline" 
 sleep 1
-wget -P /home/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.17.tar.xz
+wget -P /home/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.17.2.tar.xz
 cd /home/sunxi/kernel/mainline/
-tar -Jxf /home/sunxi/kernel/mainline/linux-4.17.tar.xz
+tar -Jxf /home/sunxi/kernel/mainline/linux-4.17.2.tar.xz
 cp /home/sunxi/TableX_defconfig /home/sunxi/kernel/mainline/linux-4.17/arch/arm/configs/
 cd /home/sunxi/kernel/mainline/linux-4.17
 echo " Compilando "
@@ -95,11 +86,11 @@ echo " Descarga y compilacion de u-boot "
 sleep 1
 echo " Descargando u-boot denx "
 sleep 1
-cd/home/sunxi/u-boot
+cd /home/sunxi/u-boot
 wget ftp://ftp.denx.de/pub/u-boot/u-boot-2017.11.tar.bz2 
 wget ftp://ftp.denx.de/pub/u-boot/u-boot-2018.03.tar.bz2 
-cp u-boot-2018.03.tar.bz2 /home/sunxi/u-boot
-tar -xjvf u-boot-2018.03.tar.bz2
+cp u-boot-2017.11.tar.bz2 /home/sunxi/u-boot
+tar -xjvf u-boot-2017.11.tar.bz2
 clear
 echo " Descarga y descompresión de u-boot finalizada "
 sleep 1
@@ -109,7 +100,7 @@ echo " no tiene que configurar nada "
 sleep 1
 echo "para continuar, seleccione Menu ----> File ----> Quit"
 sleep 1
-cd u-boot-2018.03
+cd u-boot-2017.11
 echo "      Menu de compilación del u-boot"
 echo " Elija una opción para compilación del u-boot según su modelo de tablet"
 sleep 2
