@@ -144,6 +144,9 @@ sleep 1
 echo "Iniciando proceso deboostrap"
 sleep 1
 cp /usr/bin/qemu-arm-static /TableX/usr/bin
+
+cp /usr/bin/qemu-system-common /TableX/usr/bin
+
 cp /etc/resolv.conf /TableX/etc
 
 > /home/sunxi/config.sh
