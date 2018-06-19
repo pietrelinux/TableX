@@ -41,12 +41,12 @@ sleep 1
 #git clone https://github.com/linux-sunxi/linux-sunxi.git
 echo "Preparando Imagen Gnu/Linux"
 sleep 1
-dd if=/dev/zero of=/home/sunxi/Imagen/xenial.img bs=1 count=0 seek=3200M
-mkfs.ext4 -b 4096 -F /home/sunxi/Imagen/xenial.img
-chmod 777 /home/sunxi/Imagen/xenial.img
+dd if=/dev/zero of=/home/sunxi/Imagen/trusty.img bs=1 count=0 seek=3200M
+mkfs.ext4 -b 4096 -F /home/sunxi/Imagen/trusty.img
+chmod 777 /home/sunxi/Imagen/trusty.img
 mkdir /TableX
-mount -o loop /home/sunxi/Imagen/xenial.img /TableX
-debootstrap --arch=armhf --foreign xenial /TableX
+mount -o loop /home/sunxi/Imagen/trusty.img /TableX
+debootstrap --arch=armhf --foreign trusty /TableX
 echo " Añadiendo script de inicio "
 > /home/sunxi/boot.cmd
 cat <<+ >> /home/sunxi/boot.cmd
@@ -156,10 +156,10 @@ echo " Configurando debootstrap segunda fase"
 sleep 3
 /debootstrap/debootstrap --second-stage
 export LANG=C
-echo "deb http://ports.ubuntu.com/ xenial main restricted universe multiverse" > /etc/apt/sources.list
-echo "deb http://ports.ubuntu.com/ xenial-security main restricted universe multiverse" >> /etc/apt/sources.list
-echo "deb http://ports.ubuntu.com/ xenial-updates main restricted universe multiverse" >> /etc/apt/sources.list
-echo "deb http://ports.ubuntu.com/ xenial-backports main restricted universe multiverse" >> /etc/apt/sources.list
+echo "deb http://ports.ubuntu.com/ trusty main restricted universe multiverse" > /etc/apt/sources.list
+echo "deb http://ports.ubuntu.com/ trusty-security main restricted universe multiverse" >> /etc/apt/sources.list
+echo "deb http://ports.ubuntu.com/ trusty-updates main restricted universe multiverse" >> /etc/apt/sources.list
+echo "deb http://ports.ubuntu.com/ trusty-backports main restricted universe multiverse" >> /etc/apt/sources.list
 echo "nameserver 8.8.8.8" > /etc/resolv.conf
 echo "Europe/Berlin" > /etc/timezone
 echo "TableX" >> /etc/hostname
@@ -188,14 +188,8 @@ update-locale LC_ALL=es_ES.UTF-8 LANG=es_ES.UTF-8 LC_MESSAGES=POSIX
 dpkg-reconfigure locales
 dpkg-reconfigure -f noninteractive tzdata
 sudo apt-get install lubuntu-desktop wireless-tools iw -y
-adduser xenial
-addgroup xenial sudo
-> /etc/udev/rules.d/50-mali.rules
-cat <<+ >> /etc/udev/rules.d/50-mali.rules
-KERNEL=="mali", MODE="0660", GROUP="video"
-KERNEL=="ump", MODE="0660", GROUP="video"
-+
-exit
+adduser trusty
+addgroup trusty sudo
 +
 chmod +x  /home/sunxi/config.sh
 sudo cp  /home/sunxi/config.sh /TableX/home
