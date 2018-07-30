@@ -64,11 +64,11 @@ echo " Completado"
 sleep 1
 echo " Descargando y descomprimiento Kernel mainline" 
 sleep 1
-wget -P /home/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.17.2.tar.xz
+wget -P /home/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.17.11.tar.xz
 cd /home/sunxi/kernel/mainline/
-tar -Jxf /home/sunxi/kernel/mainline/linux-4.17.2.tar.xz
-cp /home/sunxi/TableX_defconfig /home/sunxi/kernel/mainline/linux-4.17.2/arch/arm/configs/
-cd /home/sunxi/kernel/mainline/linux-4.17.2
+tar -Jxf /home/sunxi/kernel/mainline/linux-4.17.11.tar.xz
+cp /home/sunxi/TableX_defconfig /home/sunxi/kernel/mainline/linux-4.17.11/arch/arm/configs/
+cd /home/sunxi/kernel/mainline/linux-4.17.11
 echo " Compilando "
 make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf TableX_defconfig
 # sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
@@ -195,9 +195,20 @@ chmod +x  /home/sunxi/config.sh
 sudo cp  /home/sunxi/config.sh /TableX/home
 echo "Montando directorios"
 sleep 1
-sudo mount -o bind /dev /TableX/dev && sudo mount -o bind /dev/pts /TableX/dev/pts && sudo mount -t sysfs /sys /TableX/sys && sudo mount -t proc /proc /TableX/proc
+sudo mount -o bind /dev /TableX/dev && sudo mount -o bind /dev/pts /TableX/dev/pts && sudo mount -t sysfs sys /TableX/sys && sudo mount -t proc proc /TableX/proc
 chroot /TableX /usr/bin/qemu-arm-static /bin/sh -i ./home/config.sh && exit 
 rm /home/config.sh
-sudo umount /TableX/{sys,proc,dev/pts,dev}
+sudo umount /TableX/dev/pts
+sleep 3
+sync
+sudo umount /TableX/dev
+sleep 3
+sync
+sudo umount /TableX/proc
+sleep 3
+sync
+sudo umount /TableX/sys
+sleep 3
+sync
 umount /TableX
 exit
