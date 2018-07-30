@@ -187,7 +187,7 @@ export LC_ALL="es_ES.UTF-8"
 update-locale LC_ALL=es_ES.UTF-8 LANG=es_ES.UTF-8 LC_MESSAGES=POSIX
 dpkg-reconfigure locales
 dpkg-reconfigure -f noninteractive tzdata
-sudo apt-get install lubuntu-desktop wireless-tools iw -y
+sudo apt-get install wireless-tools iw -y
 adduser trusty
 addgroup trusty sudo
 +
