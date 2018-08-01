@@ -21,7 +21,7 @@ mkdir /home/sunxi/kernel/modules
 mkdir /home/sunxi/kernel/mainline
 mkdir /home/sunxi/kernel/zimage
 mkdir /mnt/ramdisk
-mount -t tmpfs -o size=10240m tmpfs /mnt/ramdisk
+mount -t tmpfs -o size=1024M tmpfs /mnt/ramdisk
 clear
 echo " Directorios creados "
 cp TableX_defconfig /home/sunxi
