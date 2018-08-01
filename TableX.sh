@@ -41,7 +41,7 @@ sleep 1
 #git clone https://github.com/linux-sunxi/linux-sunxi.git
 echo "Preparando Imagen Gnu/Linux"
 sleep 1
-dd if=/dev/zero of=/home/sunxi/Imagen/trusty.img bs=1 count=0 seek=3200M
+dd if=/dev/zero of=/home/sunxi/Imagen/trusty.img bs=1 count=0 seek=500M
 mkfs.ext4 -b 4096 -F /home/sunxi/Imagen/trusty.img
 chmod 777 /home/sunxi/Imagen/trusty.img
 mkdir /TableX
