@@ -20,6 +20,8 @@ mkdir /home/sunxi/kernel/
 mkdir /home/sunxi/kernel/modules
 mkdir /home/sunxi/kernel/mainline
 mkdir /home/sunxi/kernel/zimage
+mkdir /mnt/ramdisk
+mount -t tmpfs -o size=10240m tmpfs /mnt/ramdisk
 clear
 echo " Directorios creados "
 cp TableX_defconfig /home/sunxi
@@ -41,11 +43,11 @@ sleep 1
 #git clone https://github.com/linux-sunxi/linux-sunxi.git
 echo "Preparando Imagen Gnu/Linux"
 sleep 1
-dd if=/dev/zero of=/home/sunxi/Imagen/trusty.img bs=1 count=0 seek=500M
-mkfs.ext4 -b 4096 -F /home/sunxi/Imagen/trusty.img
-chmod 777 /home/sunxi/Imagen/trusty.img
+dd if=/dev/zero of=/mnt/ramdisk/trusty.img bs=1 count=0 seek=500M
+mkfs.ext4 -b 4096 -F /mnt/ramdisk/trusty.img
+chmod 777 /mnt/ramdisk/trusty.img
 mkdir /TableX
-mount -o loop /home/sunxi/Imagen/trusty.img /TableX
+mount -o loop /mnt/ramdisk/trusty.img /TableX
 debootstrap --arch=armhf --foreign trusty /TableX
 echo " Añadiendo script de inicio "
 > /home/sunxi/boot.cmd
