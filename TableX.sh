@@ -191,6 +191,9 @@ dpkg-reconfigure locales
 dpkg-reconfigure -f noninteractive tzdata
 apt-get upgrade -y
 sudo apt-get install wireless-tools iw -y
+rm -f /var/lib/dpkg/info/udev.post*
+rm -f /var/lib/dpkg/info/udev.pre*
+apt-get -f install
 adduser trusty
 addgroup trusty sudo
 +
