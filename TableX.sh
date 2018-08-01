@@ -194,6 +194,7 @@ sudo apt-get install wireless-tools iw -y
 rm -f /var/lib/dpkg/info/udev.post*
 rm -f /var/lib/dpkg/info/udev.pre*
 apt-get -f install
+apt-get clean
 adduser trusty
 addgroup trusty sudo
 +
