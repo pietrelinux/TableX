@@ -77,7 +77,7 @@ make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf TableX_defconfig
 make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs 
 ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=/TableX make modules modules_install
 cp -R lib /home/sunxi/kernel/modules
-cp arch/arm/boot/dts/zImage /TableX/boot/
+cp arch/arm/boot/zImage /TableX/boot/
 cp arch/arm/boot/zImage  /home/sunxi/kernel/zimage
 cp arch/arm/boot/dts/sun8i-a33-q8-tablet.dtb /TableX/boot/
 cd ..
