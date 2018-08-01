@@ -23,14 +23,16 @@ Librerias QT
 
 Device Tree Compiler
 
-sunxi-tools
+Instalación de sunxi-tools
 
-Cargando configuración del kernel,disco RAMDISK y directorios locales
+Cargar configuración del kernel,disco RAMDISK y directorios locales
 
-Creando y montando el entorno emcapsulado .img
+Creando y montando el entorno encapsulado .img
 
 Iniciando parametros y script de inicio
 
 Descarga y compilación de kernel mainline
 
 Descarga y compilación U-Boot 2011.11
+
+Creación de sistema de archivos raíz.
