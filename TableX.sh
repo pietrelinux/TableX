@@ -1,4 +1,8 @@
 #!/bin/sh
+
+################################    Dependencias    #########################
+
+
 clear
 echo " Bienvenid@s al script de creacion"
 sleep 1
@@ -12,6 +16,8 @@ echo " Instalación de dependencias completado "
 sleep 1
 echo " Creando directorios y disco RAM "
 sleep 1
+################################   Creando directorios y disco RAM    #########################
+
 mkdir /home/sunxi/
 mkdir /home/sunxi/Imagen
 mkdir /home/sunxi/tools
@@ -19,13 +25,13 @@ mkdir /home/sunxi/u-boot
 mkdir /home/sunxi/kernel/
 mkdir /home/sunxi/kernel/modules
 mkdir /home/sunxi/kernel/mainline
-mkdir /home/sunxi/kernel/zimage
+mkdir /home/sunxi/kernel/zImage
 mkdir /mnt/ramdisk
 mount -t tmpfs -o size=550M tmpfs /mnt/ramdisk
 clear
 echo " Directorios creados "
+################################   SUNXI-TOOLS    #########################
 cp TableX_defconfig /home/sunxi
-sleep 1
 echo " OK "
 sleep 1
 echo " Instalando sunxi-tools"
@@ -38,17 +44,21 @@ make -j$(nproc) install
 
 echo " Instalación completada"
 sleep 1
+################################   KERNEL LEGACY    #########################
 #echo " Descargando Kernel sunxi"
 #cd /home/sunxi/kernel/sunxi
 #git clone https://github.com/linux-sunxi/linux-sunxi.git
 echo "Preparando Imagen Gnu/Linux"
 sleep 1
+################################   CREACIÓN DE IMAGEN ROOTFS    #########################
+
 dd if=/dev/zero of=/mnt/ramdisk/trusty.img bs=1 count=0 seek=500M
 mkfs.ext4 -b 4096 -F /mnt/ramdisk/trusty.img
 chmod 777 /mnt/ramdisk/trusty.img
 mkdir /TableX
 mount -o loop /mnt/ramdisk/trusty.img /TableX
 debootstrap --arch=armhf --foreign trusty /TableX
+################################   SCRIPT DE INICIO DE U-BOOT BOOT.SCR    #########################
 echo " Añadiendo script de inicio "
 > /home/sunxi/boot.cmd
 cat <<+ >> /home/sunxi/boot.cmd
@@ -60,10 +70,10 @@ bootz 0x42000000 - 0x43000000
 mkimage -C none -A arm -T script -d /home/sunxi/boot.cmd /home/sunxi/boot.scr
 cp /home/sunxi/boot.scr /TableX/boot
 cp /home/sunxi/boot.cmd /TableX/boot
-
 clear
 echo " Completado"
 sleep 1
+################################   KERNEL   #########################
 echo " Descargando y descomprimiento Kernel mainline" 
 sleep 1
 wget -P /home/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.17.11.tar.xz
@@ -78,12 +88,12 @@ make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs
 ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=/TableX make modules modules_install
 cp -R lib /home/sunxi/kernel/modules
 cp arch/arm/boot/zImage /TableX/boot/
-cp arch/arm/boot/zImage  /home/sunxi/kernel/zimage
-cp arch/arm/boot/dts/sun8i-a33-q8-tablet.dtb /TableX/boot/
+cp arch/arm/boot/zImage  /home/sunxi/kernel/zImage
 cd ..
 clear
 echo " Kernel compilado "
 sleep 1
+################################   U-BOOT   #########################
 echo " Descarga y compilacion de u-boot "
 sleep 1
 echo " Descargando u-boot denx "
@@ -137,7 +147,6 @@ case $uboot in
 echo "Presiona una tecla para continuar...";
 read foo;;
 esac
-sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- gconfig
 sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
 sudo cp u-boot-sunxi-with-spl.bin /TableX/boot
 clear
@@ -145,12 +154,10 @@ echo "Compilación de u-boot terminada"
 sleep 1
 echo "Iniciando proceso deboostrap"
 sleep 1
+################################   SCRIPT SEGUNDA PARTE DEBOOSTRAP   #########################
 cp /usr/bin/qemu-arm-static /TableX/usr/bin
-
 cp /usr/bin/qemu-system-common /TableX/usr/bin
-
 cp /etc/resolv.conf /TableX/etc
-
 > /home/sunxi/config.sh
 cat <<+ >> /home/sunxi/config.sh
 #!/bin/sh
@@ -202,8 +209,11 @@ chmod +x  /home/sunxi/config.sh
 sudo cp  /home/sunxi/config.sh /TableX/home
 echo "Montando directorios"
 sleep 1
+################################   MONTAJE DE PARTICIONES   #########################
 sudo mount -o bind /dev /TableX/dev && sudo mount -o bind /dev/pts /TableX/dev/pts && sudo mount -t sysfs sys /TableX/sys && sudo mount -t proc proc /TableX/proc
+################################   INICIO DE CHROOT DEBOOSTRAP SEGUNDA PARTE   ######
 chroot /TableX /usr/bin/qemu-arm-static /bin/sh -i ./home/config.sh && exit 
+################################   DESMONTAJE DE PARTICIONES Y SALIDA  #########################
 rm /home/config.sh
 sudo umount /TableX/dev/pts
 sleep 3
