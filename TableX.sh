@@ -2,7 +2,6 @@
 
 ################################    Dependencias    #########################
 
-
 clear
 echo " Bienvenid@s al script de creacion"
 sleep 1
@@ -10,7 +9,7 @@ echo " de la imagen linux para una tablet allwinner "
 sleep 1
 echo " Instalando dependencias"
 sleep 1
-apt-get update
+#apt-get update
 apt-get install -y flex bison gcc-arm-linux-gnueabihf wget bc tree git debootstrap qemu-system-arm qemu-system-common build-essential libssl-dev libusb-1.0-0-dev bin86 libqt4-dev libncurses5 libncurses5-dev qt4-dev-tools u-boot-tools device-tree-compiler swig libpython-dev libqt4-dev libusb-dev zlib1g-dev pkg-config libgtk2.0-dev libglib2.0-dev libglade2-dev
 echo " Instalación de dependencias completado "
 sleep 1
@@ -27,7 +26,7 @@ mkdir /home/sunxi/kernel/modules
 mkdir /home/sunxi/kernel/mainline
 mkdir /home/sunxi/kernel/zImage
 mkdir /mnt/ramdisk
-mount -t tmpfs -o size=550M tmpfs /mnt/ramdisk
+mkdir /TableX
 clear
 echo " Directorios creados "
 ################################   SUNXI-TOOLS    #########################
@@ -48,15 +47,26 @@ sleep 1
 #echo " Descargando Kernel sunxi"
 #cd /home/sunxi/kernel/sunxi
 #git clone https://github.com/linux-sunxi/linux-sunxi.git
-echo "Preparando Imagen Gnu/Linux"
-sleep 1
-################################   CREACIÓN DE IMAGEN ROOTFS    #########################
 
-dd if=/dev/zero of=/mnt/ramdisk/trusty.img bs=1 count=0 seek=500M
-mkfs.ext4 -b 4096 -F /mnt/ramdisk/trusty.img
-chmod 777 /mnt/ramdisk/trusty.img
-mkdir /TableX
-mount -o loop /mnt/ramdisk/trusty.img /TableX
+################################   CREACIÓN DE IMAGEN ROOTFS    #########################
+echo "      Selección de ubicación de rootfs"
+echo " Elija una opcion para la ubicación de la imagen "
+sleep 2
+echo "1. 	RAMdisk (Mas rapido )"
+echo ""
+echo "2. 	En local, mas lento,aconsejado a ordenadores con poca memoria"
+echo "Preparando Imagen Gnu/Linux"
+echo ""
+echo -n "	Seleccione una opcion [1 - 2]"
+read imagen
+case $imagen in
+1) mount -t tmpfs -o size=550M tmpfs /mnt/ramdisk && dd if=/dev/zero of=/mnt/ramdisk/trusty.img bs=1 count=0 seek=500M && mkfs.ext4 -b 4096 -F /mnt/ramdisk/trusty.img &&  chmod 777 /mnt/ramdisk/trusty.img && mount -o loop /mnt/ramdisk/trusty.img /TableX;;
+2) dd if=/dev/zero of=/home/sunxi/Imagen/trusty.img bs=1 count=0 seek=500M && mkfs.ext4 -b 4096 -F /home/sunxi/Imagen/trusty.img &&  chmod 777 /home/sunxi/Imagen/trusty.img && mount -o loop /home/sunxi/Imagen/trusty.img /TableX;;
+*) echo "$opc no es una opcion válida.";
+echo "Presiona una tecla para continuar...";
+read foo;;
+esac
+################################   DEBOOTSTRAP   #########################
 debootstrap --arch=armhf --foreign trusty /TableX
 ################################   SCRIPT DE INICIO DE U-BOOT BOOT.SCR    #########################
 echo " Añadiendo script de inicio "
