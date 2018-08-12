@@ -1,38 +1,13 @@
 # TableX
 
-Este script es un intento de automatizar el proceso de creación de un sistema Gnu/Linux para dispositivos embedidos.
-La distribución seleccionada es Ubuntu 14.04.
+Hola people, este script sirve para descargar las dependencias compilar y crear una imagen mas o menos funcional de un ubuntu 14 para tablets allwinner.
 
-A continuación enumero los pasos que realiza este script:
+Puedes usarlo en ram o en local.
 
-## Paso 1: Instalación de dependencias:
+Tiene varios componentes,
 
-El compilador gnu
+u-boot
+kernel
+rootfs
 
-Herramientos de compilación cruzada
-
-Utilizades U-Boot
-
-Wget
-
-debootstrap
-
-qemu
-
-Librerias QT
-
-Device Tree Compiler
-
-Instalación de sunxi-tools
-
-Cargar configuración del kernel,disco RAMDISK y directorios locales
-
-Creando y montando el entorno encapsulado .img
-
-Iniciando parametros y script de inicio
-
-Descarga y compilación de kernel mainline
-
-Descarga y compilación U-Boot 2011.11
-
-Creación de sistema de archivos raíz.
+Happy hacking
