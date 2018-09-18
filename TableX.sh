@@ -86,11 +86,11 @@ sleep 1
 ################################   KERNEL   #########################
 echo " Descargando y descomprimiento Kernel mainline" 
 sleep 1
-wget -P /home/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.17.11.tar.xz
+wget -P /home/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.18.8.tar.xz
 cd /home/sunxi/kernel/mainline/
-tar -Jxf /home/sunxi/kernel/mainline/linux-4.17.11.tar.xz
+tar -Jxf /home/sunxi/kernel/mainline/linux-4.18.8.tar.xz
 cp /home/sunxi/TableX_defconfig /home/sunxi/kernel/mainline/linux-4.17.11/arch/arm/configs/
-cd /home/sunxi/kernel/mainline/linux-4.17.11
+cd /home/sunxi/kernel/mainline/linux-4.18.8
 echo " Compilando "
 make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf TableX_defconfig
 # sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
