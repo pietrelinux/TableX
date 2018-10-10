@@ -92,10 +92,10 @@ tar -Jxf /home/sunxi/kernel/mainline/linux-4.18.8.tar.xz
 cp /home/sunxi/TableX_defconfig /home/sunxi/kernel/mainline/linux-4.18.8/arch/arm/configs/
 cd /home/sunxi/kernel/mainline/linux-4.18.8
 echo " Compilando "
-make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf TableX_defconfig
+make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- TableX_defconfig
 # sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
 make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage modules dtbs 
-ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=/TableX make modules modules_install
+ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=output make modules modules_install
 cp -R lib /home/sunxi/kernel/modules
 cp arch/arm/boot/zImage /TableX/boot/
 cp arch/arm/boot/zImage  /home/sunxi/kernel/zImage
