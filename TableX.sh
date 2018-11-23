@@ -214,6 +214,8 @@ apt-get -f install
 apt-get clean
 adduser trusty
 addgroup trusty sudo
+addgroup trusty adm
+addgroup trusty users
 +
 chmod +x  /home/sunxi/config.sh
 sudo cp  /home/sunxi/config.sh /TableX/home
