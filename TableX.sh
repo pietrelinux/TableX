@@ -9,7 +9,7 @@ echo " de la imagen linux para una tablet allwinner "
 sleep 1
 echo " Instalando dependencias"
 sleep 1
-#apt-get update
+apt-get update
 apt-get install -y flex bison gcc-arm-linux-gnueabihf wget bc tree git debootstrap qemu-system-arm qemu-user-static build-essential libssl-dev libusb-1.0-0-dev bin86 libqt4-dev libncurses5 libncurses5-dev qt4-dev-tools u-boot-tools device-tree-compiler swig libpython-dev libqt4-dev libusb-dev zlib1g-dev pkg-config libgtk2.0-dev libglib2.0-dev libglade2-dev
 echo " Instalación de dependencias completado "
 sleep 1
@@ -110,7 +110,6 @@ echo " Descargando u-boot denx "
 sleep 1
 cd /home/sunxi/u-boot
 wget ftp://ftp.denx.de/pub/u-boot/u-boot-2017.11.tar.bz2 
-wget ftp://ftp.denx.de/pub/u-boot/u-boot-2018.03.tar.bz2 
 cp u-boot-2017.11.tar.bz2 /home/sunxi/u-boot
 tar -xjvf u-boot-2017.11.tar.bz2
 clear
