@@ -1,6 +1,6 @@
 # TableX
 
-Hola people, este script sirve para descargar las dependencias compilar y crear una imagen mas o menos funcional de un ubuntu 14 para tablets allwinner.
+Script que realiza diversas acciones para disponer de una tablet allwinner con Gnu Linux
 
 Puedes usarlo en ram o en local.
 
