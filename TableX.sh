@@ -88,7 +88,7 @@ echo " Descargando y descomprimiento Kernel mainline"
 sleep 1
 wget -P /home/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.20.7.tar.xz
 cd /home/sunxi/kernel/mainline/
-tar -Jxf /home/sunxi/kernel/mainline/linux-4.20.3.tar.xz
+tar -Jxf /home/sunxi/kernel/mainline/linux-4.20.7.tar.xz
 cp /home/sunxi/TableX_defconfig /home/sunxi/kernel/mainline/linux-4.20.7/arch/arm/configs/
 cd /home/sunxi/kernel/mainline/linux-4.20.7
 echo " Compilando "
