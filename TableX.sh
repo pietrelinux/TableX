@@ -86,7 +86,7 @@ sleep 1
 ################################   KERNEL   #########################
 echo " Descargando y descomprimiento Kernel mainline" 
 sleep 1
-wget -P /home/sunxi/kernel/mainline hhttps://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.0.7.tar.xz
+wget -P /home/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.0.7.tar.xz
 cd /home/sunxi/kernel/mainline/
 tar -Jxf /home/sunxi/kernel/mainline/inux-5.0.7.tar.xz
 cp /home/sunxi/TableX_defconfig /home/sunxi/kernel/mainline/linux-5.0.7/arch/arm/configs/
