@@ -86,11 +86,11 @@ sleep 1
 ################################   KERNEL   #########################
 echo " Descargando y descomprimiento Kernel mainline" 
 sleep 1
-wget -P /home/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.20.7.tar.xz
+wget -P /home/sunxi/kernel/mainline hhttps://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.0.7.tar.xz
 cd /home/sunxi/kernel/mainline/
-tar -Jxf /home/sunxi/kernel/mainline/linux-4.20.7.tar.xz
-cp /home/sunxi/TableX_defconfig /home/sunxi/kernel/mainline/linux-4.20.7/arch/arm/configs/
-cd /home/sunxi/kernel/mainline/linux-4.20.7
+tar -Jxf /home/sunxi/kernel/mainline/inux-5.0.7.tar.xz
+cp /home/sunxi/TableX_defconfig /home/sunxi/kernel/mainline/linux-5.0.7/arch/arm/configs/
+cd /home/sunxi/kernel/mainline/linux-5.0.7
 echo " Compilando "
 make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- TableX_defconfig
 # sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
@@ -144,10 +144,10 @@ echo ""
 echo -n "	Seleccione una opcion [1 - 8]"
 read uboot
 case $uboot in
-1) sudo cp /home/sunxi/kernel/mainline/linux-4.20.7/arch/arm/boot/dts/sun5i-a13-q8-tablet.dtb /TableX/boot &&  make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- q8_a13_tablet_defconfig;;
-2) sudo cp /home/sunxi/kernel/mainline/linux-4.20.7/arch/arm/boot/dts/sun8i-a23-q8-tablet.dtb /TableX/boot && make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- q8_a23_tablet_800x480_defconfig;;
-3) sudo cp /home/sunxi/kernel/mainline/linux-4.20.7/arch/arm/boot/dts/sun8i-a33-q8-tablet.dtb /TableX/boot && make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- q8_a33_tablet_1024x600_defconfig;;
-4) sudo cp /home/sunxi/kernel/mainline/linux-4.20.7/arch/arm/boot/dts/sun8i-a33-q8-tablet.dtb /TableX/boot && make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- q8_a33_tablet_800x480_defconfig;;
+1) sudo cp /home/sunxi/kernel/mainline/linux-5.0.7/arch/arm/boot/dts/sun5i-a13-q8-tablet.dtb /TableX/boot &&  make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- q8_a13_tablet_defconfig;;
+2) sudo cp /home/sunxi/kernel/mainline/linux-5.0.7/arch/arm/boot/dts/sun8i-a23-q8-tablet.dtb /TableX/boot && make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- q8_a23_tablet_800x480_defconfig;;
+3) sudo cp /home/sunxi/kernel/mainline/linux-5.0.7/arch/arm/boot/dts/sun8i-a33-q8-tablet.dtb /TableX/boot && make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- q8_a33_tablet_1024x600_defconfig;;
+4) sudo cp /home/sunxi/kernel/mainline/linux-5.0.7/arch/arm/boot/dts/sun8i-a33-q8-tablet.dtb /TableX/boot && make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- q8_a33_tablet_800x480_defconfig;;
 5) sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- iNet_3F_defconfig ;;
 6) sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- iNet_3W_defconfig;;
 7) sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- iNet_86VS_defconfig;;
