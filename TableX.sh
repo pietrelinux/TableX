@@ -60,14 +60,14 @@ echo ""
 echo -n "	Seleccione una opcion [1 - 2]"
 read imagen
 case $imagen in
-1) mount -t tmpfs -o size=550M tmpfs /mnt/ramdisk && dd if=/dev/zero of=/mnt/ramdisk/trusty.img bs=1 count=0 seek=500M && mkfs.ext4 -b 4096 -F /mnt/ramdisk/trusty.img &&  chmod 777 /mnt/ramdisk/trusty.img && mount -o loop /mnt/ramdisk/trusty.img /TableX;;
-2) dd if=/dev/zero of=/home/sunxi/Imagen/trusty.img bs=1 count=0 seek=500M && mkfs.ext4 -b 4096 -F /home/sunxi/Imagen/trusty.img &&  chmod 777 /home/sunxi/Imagen/trusty.img && mount -o loop /home/sunxi/Imagen/trusty.img /TableX;;
+1) mount -t tmpfs -o size=550M tmpfs /mnt/ramdisk && dd if=/dev/zero of=/mnt/ramdisk/xenial.img bs=1 count=0 seek=500M && mkfs.ext4 -b 4096 -F /mnt/ramdisk/xenial.img &&  chmod 777 /mnt/ramdisk/xenial.img && mount -o loop /mnt/ramdisk/xenial.img /TableX;;
+2) dd if=/dev/zero of=/home/sunxi/Imagen/xenial.img bs=1 count=0 seek=500M && mkfs.ext4 -b 4096 -F /home/sunxi/Imagen/xenial.img &&  chmod 777 /home/sunxi/Imagen/xenial.img && mount -o loop /home/sunxi/Imagen/xenial.img /TableX;;
 *) echo "$opc no es una opcion válida.";
 echo "Presiona una tecla para continuar...";
 read foo;;
 esac
 ################################   DEBOOTSTRAP   #########################
-debootstrap --arch=armhf --foreign trusty /TableX
+debootstrap --arch=armhf --foreign xenial /TableX
 ################################   SCRIPT DE INICIO DE U-BOOT BOOT.SCR    #########################
 echo " Añadiendo script de inicio "
 > /home/sunxi/boot.cmd
@@ -86,11 +86,11 @@ sleep 1
 ################################   KERNEL   #########################
 echo " Descargando y descomprimiento Kernel mainline" 
 sleep 1
-wget -P /home/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.0.7.tar.xz
+wget -P /home/sunxi/kernel/mainline https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.1.3.tar.xz
 cd /home/sunxi/kernel/mainline/
-tar -Jxf /home/sunxi/kernel/mainline/inux-5.0.7.tar.xz
-cp /home/sunxi/TableX_defconfig /home/sunxi/kernel/mainline/linux-5.0.7/arch/arm/configs/
-cd /home/sunxi/kernel/mainline/linux-5.0.7
+tar -Jxf /home/sunxi/kernel/mainline/linux-5.1.3.tar.xz
+cp /home/sunxi/TableX_defconfig /home/sunxi/kernel/mainline/linux-5.1.3/arch/arm/configs/
+cd /home/sunxi/kernel/mainline/linux-5.1.3
 echo " Compilando "
 make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- TableX_defconfig
 # sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
@@ -144,10 +144,10 @@ echo ""
 echo -n "	Seleccione una opcion [1 - 8]"
 read uboot
 case $uboot in
-1) sudo cp /home/sunxi/kernel/mainline/linux-5.0.7/arch/arm/boot/dts/sun5i-a13-q8-tablet.dtb /TableX/boot &&  make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- q8_a13_tablet_defconfig;;
-2) sudo cp /home/sunxi/kernel/mainline/linux-5.0.7/arch/arm/boot/dts/sun8i-a23-q8-tablet.dtb /TableX/boot && make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- q8_a23_tablet_800x480_defconfig;;
-3) sudo cp /home/sunxi/kernel/mainline/linux-5.0.7/arch/arm/boot/dts/sun8i-a33-q8-tablet.dtb /TableX/boot && make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- q8_a33_tablet_1024x600_defconfig;;
-4) sudo cp /home/sunxi/kernel/mainline/linux-5.0.7/arch/arm/boot/dts/sun8i-a33-q8-tablet.dtb /TableX/boot && make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- q8_a33_tablet_800x480_defconfig;;
+1) sudo cp /home/sunxi/kernel/mainline/linux-5.1.3/arch/arm/boot/dts/sun5i-a13-q8-tablet.dtb /TableX/boot &&  make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- q8_a13_tablet_defconfig;;
+2) sudo cp /home/sunxi/kernel/mainline/linux-5.1.3/arch/arm/boot/dts/sun8i-a23-q8-tablet.dtb /TableX/boot && make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- q8_a23_tablet_800x480_defconfig;;
+3) sudo cp /home/sunxi/kernel/mainline/linux-5.1.3/arch/arm/boot/dts/sun8i-a33-q8-tablet.dtb /TableX/boot && make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- q8_a33_tablet_1024x600_defconfig;;
+4) sudo cp /home/sunxi/kernel/mainline/linux-5.1.3/arch/arm/boot/dts/sun8i-a33-q8-tablet.dtb /TableX/boot && make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- q8_a33_tablet_800x480_defconfig;;
 5) sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- iNet_3F_defconfig ;;
 6) sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- iNet_3W_defconfig;;
 7) sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- iNet_86VS_defconfig;;
@@ -174,10 +174,10 @@ echo " Configurando debootstrap segunda fase"
 sleep 3
 /debootstrap/debootstrap --second-stage
 export LANG=C
-echo "deb http://ports.ubuntu.com/ trusty main restricted universe multiverse" > /etc/apt/sources.list
-echo "deb http://ports.ubuntu.com/ trusty-security main restricted universe multiverse" >> /etc/apt/sources.list
-echo "deb http://ports.ubuntu.com/ trusty-updates main restricted universe multiverse" >> /etc/apt/sources.list
-echo "deb http://ports.ubuntu.com/ trusty-backports main restricted universe multiverse" >> /etc/apt/sources.list
+echo "deb http://ports.ubuntu.com/ xenial main restricted universe multiverse" > /etc/apt/sources.list
+echo "deb http://ports.ubuntu.com/ xenial-security main restricted universe multiverse" >> /etc/apt/sources.list
+echo "deb http://ports.ubuntu.com/ xenial-updates main restricted universe multiverse" >> /etc/apt/sources.list
+echo "deb http://ports.ubuntu.com/ xenial-backports main restricted universe multiverse" >> /etc/apt/sources.list
 echo "nameserver 8.8.8.8" > /etc/resolv.conf
 echo "Europe/Berlin" > /etc/timezone
 echo "TableX" >> /etc/hostname
@@ -211,10 +211,10 @@ rm -f /var/lib/dpkg/info/udev.post*
 rm -f /var/lib/dpkg/info/udev.pre*
 apt-get -f install
 apt-get clean
-adduser trusty
-addgroup trusty sudo
-addgroup trusty adm
-addgroup trusty users
+adduser xenial
+addgroup xenial sudo
+addgroup xenial adm
+addgroup xenial users
 +
 chmod +x  /home/sunxi/config.sh
 sudo cp  /home/sunxi/config.sh /TableX/home
