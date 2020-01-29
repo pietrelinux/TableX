@@ -58,11 +58,11 @@ sleep 1
 ################################   KERNEL   #########################
 echo " Descargando y descomprimiento Kernel mainline" 
 sleep 1
-wget -P /home/sunxi/kernel https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.3.12.tar.xz
+wget -P /home/sunxi/kernel https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.5.tar.xz
 cd /home/sunxi/kernel
-tar -Jxf /home/sunxi/kernel/linux-5.3.12.tar.xz
-cp /home/sunxi/TableX_defconfig /home/sunxi/kernel/linux-5.3.12/arch/arm/configs/
-cd /home/sunxi/kernel/linux-5.3.12
+tar -Jxf /home/sunxi/kernel/linux-5.5.tar.xz
+cp /home/sunxi/TableX_defconfig /home/sunxi/kernel/linux-5.5/arch/arm/configs/
+cd /home/sunxi/kernel/linux-5.5
 echo " Compilando "
 make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- TableX_defconfig
 # sudo make -j$(nproc) ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- xconfig
