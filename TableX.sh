@@ -79,9 +79,9 @@ sleep 1
 echo " Descargando u-boot denx "
 sleep 1
 cd /home/sunxi/u-boot
-wget ftp://ftp.denx.de/pub/u-boot/u-boot-2019.07.tar.bz2
-cp u-boot-2017.11.tar.bz2 /home/sunxi/u-boot
-tar -xjvf u-boot-2019.07.tar.bz2
+wget ftp://ftp.denx.de/pub/u-boot/u-boot-2020.01.tar.bz2
+cp u-boot-2020.01.tar.bz2 /home/sunxi/u-boot
+tar -xjvf u-boot-2020.01.tar.bz2
 echo " Descarga y descompresión de u-boot finalizada "
 sleep 1
 echo " Cuando aparezca el menu "
@@ -90,7 +90,7 @@ echo " no tiene que configurar nada "
 sleep 1
 echo "para continuar, seleccione Menu ----> File ----> Quit"
 sleep 1
-cd u-boot-2019.07
+cd u-boot-2020.01
 echo "      Menu de compilación del u-boot"
 echo " Elija una opción para compilación del u-boot según su modelo de tablet"
 sleep 2
