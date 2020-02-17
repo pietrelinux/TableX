@@ -56,7 +56,7 @@ mkimage -C none -A arm -T script -d /home/sunxi/boot/boot.cmd /home/sunxi/boot/b
 echo " Completado"
 sleep 1
 ################################   KERNEL   #########################
-echo " Descargando y descomprimiento Kernel mainline" 
+echo " Descargando y descomprimiendo Kernel mainline" 
 sleep 1
 wget -P /home/sunxi/kernel https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.5.tar.xz
 cd /home/sunxi/kernel
