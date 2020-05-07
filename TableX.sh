@@ -10,8 +10,7 @@ sleep 1
 echo " Instalando dependencias"
 sleep 1
 apt-get update
-apt-get install -y flex bison python3-dev gcc-arm-linux-gnueabihf wget bc tree git build-essential libssl-dev libusb-1.0-0-dev bin86 libqt4-dev libncurses5 libncurses5-dev qt5-dev-tools u-boot-tools device-tree-compiler swig libpython-dev libqt5-dev libusb-dev zlib1g-dev pkg-config libgtk2.0-dev libglib2.0-dev libglade2-dev
-echo " Instalación de dependencias completado "
+apt-get install -y flex bison python3-dev gcc-arm-linux-gnueabihf wget bc tree git build-essential libssl-dev libusb-1.0-0-dev bin86 libncurses5 libncurses5-dev u-boot-tools device-tree-compiler swig libpython2-dev libusb-dev zlib1g-dev pkg-config libgtk2.0-dev libglib2.0-dev libglade2-devecho " Instalación de dependencias completado "
 sleep 1
 echo " Creando directorios y disco RAM "
 sleep 1
